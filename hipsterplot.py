@@ -73,7 +73,7 @@ def enumerated_reversed(seq):
     return zip(range(len(seq) - 1, -1, -1), reversed(seq))
 
 
-def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
+def plot(y_vals, x_vals=None, ymin=None, ymax=None, xmin=None, xmax=None, file=sys.stdout, num_x_chars=70, num_y_chars=15):
     """
     Plots the values given by y_vals. The x_vals values are the y indexes, by
     default, unless explicitly given. Pairs (x, y) are matched by the x_vals
@@ -86,11 +86,11 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
     x_vals = list(x_vals) if x_vals else list(range(len(y_vals)))
     if len(x_vals) != len(y_vals):
         raise ValueError("x_vals and y_vals must have the same length")
-
-    ymin = min(y_vals)
-    ymax = max(y_vals)
-    xmin = min(x_vals)
-    xmax = max(x_vals)
+        
+    if ymin is None: ymin = min(y_vals)
+    if ymax is None: ymax = max(y_vals)
+    if xmin is None: xmin = min(x_vals)
+    is xmax is None: xmax = max(x_vals)
 
     xbinwidth = (xmax - xmin) / num_x_chars
     y_bin_width = (ymax - ymin) / num_y_chars
@@ -106,7 +106,7 @@ def plot(y_vals, x_vals=None, num_x_chars=70, num_y_chars=15):
 
     for idx, row in enumerated_reversed(rows):
         y_bin_mid = y_bin_ends[idx] - y_bin_width * 0.5
-        print("{:10.4f} {}".format(y_bin_mid, "".join(row)))
+        print("{:10.4f} {}".format(y_bin_mid, "".join(row)), file=file)
 
 
 if __name__ == '__main__':
